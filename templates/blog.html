@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="row">
+    
+    <div class="col-md-7">
+        <h1 class="mb-4">All Articles</h1>
+        {% for article in articles %}
+            <article class="mb-4 p-4 border rounded">
+                <h2><a href="{{ url_for('article_detail', article_id=article.id) }}" class="text-decoration-none">{{ article.title }}</a></h2>
+                <p>{{ article.content | truncate(200) | safe }}</p>
+                <a href="{{ url_for('article_detail', article_id=article.id) }}" class="btn btn-secondary btn-sm">Read More</a>
+            </article>
+        {% endfor %}
+    </div>
+
+    <div class="col-md-5">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h3>🤖 AI Article Assistant</h3>
+            </div>
+            <div class="card-body">
+                <p>Just give the AI a topic, and it will write the full article for you.</p>
+                <form action="{{ url_for('generate_ai_post') }}" method="POST">
+                    <div class="mb-3">
+                        <label for="topic" class="form-label"><b>Article Topic:</b></label>
+                        <input type="text" class="form-control" id="topic" name="topic" placeholder="e.g., 'What is Python?'" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Generate Article</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h3>✍️ Manual Post</h3>
+            </div>
+            <div class="card-body">
+                <p>Write your own article from scratch.</p>
+                <form action="{{ url_for('create_manual_post') }}" method="POST">
+                    <div class="mb-3">
+                        <label for="title" class="form-label"><b>Title:</b></label>
+                        <input type="text" class="form-control" id="title" name="title" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="content" class="form-label"><b>Content (HTML is allowed):</b></label>
+                        <textarea class="form-control" id="content" name="content" rows="10" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-secondary w-100">Save Manual Post</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
